@@ -10,12 +10,20 @@ const Nav = (props) => {
 
     return (
         <nav>
-            <Link className="nav-brand" to="/">App Name</Link>
+            <Link className="nav-brand" to="/">Collab</Link>
             { props.user ? (
                 <ul>
-                    <li>Welcome, {props.user.username}!</li>
                     <li>
                         <Link to="/">Dashboard</Link>
+                    </li>
+                    <li>
+                        <Link to="/tasks">Tasks</Link>
+                    </li>
+                    <li>
+                        <Link to="/meetings">Meetings</Link>
+                    </li>
+                    <li>
+                        <Link to="/workspaces">My workspaces</Link>
                     </li>
                     <li>
                         <Link to="/" onClick={handleSignOut}>Sign Out</Link>
