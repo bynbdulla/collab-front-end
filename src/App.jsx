@@ -7,8 +7,9 @@ import SignInForm from "./pages/SignInForm";
 import Landing from "./pages/Landing";
 import Dashboard from "./pages/Dashboard";
 import WorkspaceList from "./pages/WorkspaceList";
-import WorkspaceForm from "./pages/WorkspaceForm"
+import WorkspaceForm from "./pages/WorkspaceForm";
 import WorkspaceDetails from "./pages/WorkspaceDetails";
+import WorkspaceUpdate from "./pages/WorkspaceUpdate";
 import * as workspaceService from "./services/workspace";
 
 const getUserFromToken = () => {
@@ -23,7 +24,7 @@ const App = () => {
   const [user, setUser] = useState(getUserFromToken());
   const [workspaces, setWorkspaces] = useState([]);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchAllWorkspaces = async () => {
@@ -34,11 +35,17 @@ const App = () => {
     if (user) fetchAllWorkspaces();
   }, [user]);
 
-  const handleAddWorkspace = async (formData) =>{
-  const newWorkspace = await workspaceService.create(formData)
-    setWorkspaces([newWorkspace, ...workspaces])
+  const handleAddWorkspace = async (formData) => {
+    const newWorkspace = await workspaceService.create(formData);
+    setWorkspaces([newWorkspace, ...workspaces]);
+    navigate("/workspaces");
+  };
+
+  const handleDeleteWorkspace = async (workspaceId) => {
+    const deletedWorkspace = await workspaceService.deleteWorkspace(workspaceId)
+    setWorkspaces(workspaces.filter((workspace) => workspace._id !== workspaceId))
     navigate('/workspaces')
-  }
+  };
 
   return (
     <div>
@@ -51,9 +58,27 @@ const App = () => {
           />
           {user ? (
             <>
-              <Route path="/workspaces" element={<WorkspaceList workspaces={workspaces} />} />
-              <Route path="/workspaces/:workspaceId" element={<WorkspaceDetails />} />
-              <Route path="/workspaces/new" element={<WorkspaceForm handleAddWorkspace={handleAddWorkspace} />} />
+              <Route
+                path="/workspaces"
+                element={<WorkspaceList workspaces={workspaces} />}
+              />
+              <Route
+                path="/workspaces/:workspaceId"
+                element={
+                  <WorkspaceDetails
+                    user={user}
+                    handleDeleteWorkspace={handleDeleteWorkspace}
+                  />
+                }
+              />
+              <Route path="/workspaces/:workspaceId/edit" element={<WorkspaceUpdate />} />
+              <Route
+                path="/workspaces/new"
+                element={
+                  <WorkspaceForm handleAddWorkspace={handleAddWorkspace} />
+                }
+              />
+              {/* <Route path="/workspaces/:workspaceId" element={<WorkspaceUpdate user={user} />} /> */}
             </>
           ) : (
             <>

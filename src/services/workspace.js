@@ -17,6 +17,7 @@ const create = async (workspaceFormData) => {
 };
 
 const index = async () => {
+  console.log("index");
   try {
     const res = await fetch(BASE_URL, {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -28,15 +29,29 @@ const index = async () => {
 };
 
 const show = async (workspaceId) => {
+  console.log("workspace show, id: ", workspaceId);
   try {
-    const res = await fetch(`$BASE_URL/${workspaceId}`, {
+    const res = await fetch(`${BASE_URL}/${workspaceId}`, {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-    })
-    return res.json()
+    });
+    return res.json();
   } catch (err) {
     console.log(err);
-    
   }
 };
 
-export { create, index, show };
+const deleteWorkspace = async (workspaceId) => {
+  try {
+    const res = await fetch(`${BASE_URL}/${workspaceId}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    return res.json();
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export { create, index, show, deleteWorkspace };
