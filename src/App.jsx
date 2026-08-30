@@ -1,12 +1,14 @@
 import Nav from "./components/Nav";
 import SignUpForm from "./pages/SignUpForm";
 import "./App.css";
-import { Routes, Route } from "react-router";
+import { Routes, Route, useNavigate } from "react-router";
 import { useState, useEffect } from "react";
 import SignInForm from "./pages/SignInForm";
 import Landing from "./pages/Landing";
 import Dashboard from "./pages/Dashboard";
 import WorkspaceList from "./pages/WorkspaceList";
+import WorkspaceForm from "./pages/WorkspaceForm"
+import WorkspaceDetails from "./pages/WorkspaceDetails";
 import * as workspaceService from "./services/workspace";
 
 const getUserFromToken = () => {
@@ -21,6 +23,8 @@ const App = () => {
   const [user, setUser] = useState(getUserFromToken());
   const [workspaces, setWorkspaces] = useState([]);
 
+  const navigate = useNavigate()
+
   useEffect(() => {
     const fetchAllWorkspaces = async () => {
       const workspacesData = await workspaceService.index();
@@ -29,6 +33,12 @@ const App = () => {
     };
     if (user) fetchAllWorkspaces();
   }, [user]);
+
+  const handleAddWorkspace = async (formData) =>{
+  const newWorkspace = await workspaceService.create(formData)
+    setWorkspaces([newWorkspace, ...workspaces])
+    navigate('/workspaces')
+  }
 
   return (
     <div>
@@ -42,6 +52,8 @@ const App = () => {
           {user ? (
             <>
               <Route path="/workspaces" element={<WorkspaceList workspaces={workspaces} />} />
+              <Route path="/workspaces/:workspaceId" element={<WorkspaceDetails />} />
+              <Route path="/workspaces/new" element={<WorkspaceForm handleAddWorkspace={handleAddWorkspace} />} />
             </>
           ) : (
             <>
