@@ -161,18 +161,6 @@ const WorkspaceForm = (props) => {
                 <div
                   key={user.id}
                   onClick={() => selectMember(user)}
-                  style={{
-                    padding: "12px 15px",
-                    cursor: "pointer",
-                    borderBottom: "1px solid #f0f0f0",
-                    transition: "background-color 0.2s",
-                  }}
-                  onMouseEnter={(e) =>
-                    (e.currentTarget.style.backgroundColor = "#f5f5f5")
-                  }
-                  onMouseLeave={(e) =>
-                    (e.currentTarget.style.backgroundColor = "white")
-                  }
                 >
                   {user.username}
                 </div>
@@ -182,34 +170,18 @@ const WorkspaceForm = (props) => {
         </div>
 
         {selectedMembers.length > 0 && (
-          <div style={{ marginTop: "20px" }}>
+          <div>
             <h3>Selected Members:</h3>
-            <ul style={{ listStyle: "none", padding: 0 }}>
+            <ul>
               {selectedMembers.map((member) => (
                 <li
                   key={member.id}
-                  style={{
-                    padding: "10px",
-                    background: "#f9f9f9",
-                    marginBottom: "8px",
-                    borderRadius: "4px",
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                  }}
                 >
                   {member.username}
                   <button
                     type="button"
                     onClick={() => removeMember(member.id)}
-                    style={{
-                      marginLeft: "10px",
-                      background: "none",
-                      border: "none",
-                      color: "red",
-                      cursor: "pointer",
-                      fontSize: "18px",
-                    }}
+                    
                   >
                     ×
                   </button>

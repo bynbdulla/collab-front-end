@@ -11,6 +11,8 @@ import WorkspaceForm from "./pages/WorkspaceForm";
 import WorkspaceDetails from "./pages/WorkspaceDetails";
 import WorkspaceUpdate from "./pages/WorkspaceUpdate";
 import * as workspaceService from "./services/workspace";
+import * as meetingService from "./services/meeting"
+import MeetingForm from "./pages/WorkspaceForm";
 
 const getUserFromToken = () => {
   const token = localStorage.getItem("token");
@@ -23,6 +25,7 @@ const getUserFromToken = () => {
 const App = () => {
   const [user, setUser] = useState(getUserFromToken());
   const [workspaces, setWorkspaces] = useState([]);
+  const [meetings, setMeetings] = useState([]);
 
   const navigate = useNavigate();
 
@@ -40,12 +43,25 @@ const App = () => {
     setWorkspaces([newWorkspace, ...workspaces]);
     navigate("/workspaces");
   };
+  const handleAddMeeting = async (formData) => {
+    const newMeeting = await meetingService.create(formData);
+    setMeetings([newMeeting, ...meetings]);
+    navigate("/workspaces/:workspaceId/meetings");
+  };
 
   const handleDeleteWorkspace = async (workspaceId) => {
     const deletedWorkspace = await workspaceService.deleteWorkspace(workspaceId)
     setWorkspaces(workspaces.filter((workspace) => workspace._id !== workspaceId))
     navigate('/workspaces')
   };
+
+  const handleUpdateWorkspace = async (workspaceId, formData) =>{
+    const updateWorkspace = await workspaceService.update(workspaceId, formData)
+    const updatedWorkspaceArr = workspaces.map((workspace) => {
+      return workspace._id === workspaceId ? updateWorkspace : workspace 
+    })
+    setWorkspaces(updatedWorkspaceArr)
+  }
 
   return (
     <div>
@@ -71,14 +87,15 @@ const App = () => {
                   />
                 }
               />
-              <Route path="/workspaces/:workspaceId/edit" element={<WorkspaceUpdate />} />
+              <Route path="/workspaces/:workspaceId/edit" element={<WorkspaceUpdate handleUpdateWorkspace={handleUpdateWorkspace} />} />
               <Route
                 path="/workspaces/new"
                 element={
                   <WorkspaceForm handleAddWorkspace={handleAddWorkspace} />
                 }
               />
-              {/* <Route path="/workspaces/:workspaceId" element={<WorkspaceUpdate user={user} />} /> */}
+              {/* Meetings routes */}
+              <Route path="/workspaces/:workspaceId/meetings/new" element={<MeetingForm handleAddMeeting={handleAddMeeting} />} />
             </>
           ) : (
             <>

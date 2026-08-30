@@ -20,7 +20,7 @@ const Nav = (props) => {
                         <Link to="/tasks">Tasks</Link>
                     </li>
                     <li>
-                        <Link to="/meetings">Meetings</Link>
+                        <Link to="/workspaces/:workspaceId/meetings">Meetings</Link>
                     </li>
                     <li>
                         <Link to="/workspaces">My workspaces</Link>

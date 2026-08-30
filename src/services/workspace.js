@@ -54,4 +54,21 @@ const deleteWorkspace = async (workspaceId) => {
   }
 };
 
-export { create, index, show, deleteWorkspace };
+async function update(workspaceId, workspaceFormData) {
+  try {
+    const res = await fetch(`${BASE_URL}/${workspaceId}`, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(workspaceFormData),
+    })
+    return res.json()
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+
+export { create, index, show, deleteWorkspace, update };
