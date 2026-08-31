@@ -68,10 +68,10 @@ const App = () => {
     );
     navigate("/workspaces");
   };
-  const handleDeleteMeeting = async (meetingId) => {
+  const handleDeleteMeeting = async (meetingId, workspaceId) => {
     const deletedMeeting = await meetingService.deleteMeeting(meetingId);
-    setMeetings(workspaces.filter((meetings) => meetings._id !== meetingId));
-    navigate("/workspaces");
+    setMeetings(meetings.filter((meeting) => meeting._id !== meetingId));
+    navigate(`/workspaces/${workspaceId}/meetings`);
   };
 
   const handleUpdateWorkspace = async (workspaceId, formData) => {
@@ -131,7 +131,7 @@ const App = () => {
 
               <Route
                 path="/workspaces/:workspaceId/meetings"
-                element={<MeetingList meetings={meetings} />}
+                element={<MeetingList />}
               />
 
               {/* <Route path="/workspaces/:workspaceId/meetings/:meetingId" element={<MeetingsDetails user={user}

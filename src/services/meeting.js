@@ -17,10 +17,13 @@ const create = async (workspaceId ,MeetingFormData) => {
   }
 };
 
-const index = async () => {
+const index = async (workspaceId) => {
   console.log("index");
   try {
-    const res = await fetch(`${BASE_URL}/workspaces/${workspaceId}/meetings`);
+    const res = await fetch(`${BASE_URL}/${workspaceId}/meetings`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+    }, });
     return res.json();
   } catch (error) {
     console.log(error);
@@ -52,7 +55,7 @@ const deleteMeeting = async (workspaceId , meetingId) => {
   }
 };
 
-const update = async (meetingId, meetingFormData) => {
+const update = async (workspaceId ,meetingId, meetingFormData) => {
   try {
     const res = await fetch(`${BASE_URL}/${workspaceId}/meetings/${meetingId}`, {
       method: 'PUT',

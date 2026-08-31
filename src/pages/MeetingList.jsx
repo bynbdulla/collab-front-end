@@ -5,10 +5,8 @@ import * as meetingService from "../services/meeting";
 import { useState } from "react";
 // import MeetingDetails from "./MeetingDetails";
 
-const MeetingList = (props) => {
+const MeetingList = () => {
   const { workspaceId } = useParams();
-
-  console.log(props, "check");
   const [meetings, setMeetings] = useState([]);
 
   useEffect(() => {
@@ -17,7 +15,7 @@ const MeetingList = (props) => {
 
       try {
         const meetingsData = await meetingService.index(workspaceId);
-        setMeetings(meetingsData);
+        setMeetings(meetingsData || []);
       } catch (error) {
         console.error("Failed to fetch meetings:", error);
       }
@@ -25,7 +23,7 @@ const MeetingList = (props) => {
     if (!meetings || meetings.length === 0) {
       fetchAllMeetings();
     }
-  }, [workspaceId, setMeetings]);
+  }, [workspaceId]);
 
   return (
     <main className="meeting-list">
@@ -33,7 +31,7 @@ const MeetingList = (props) => {
       <Link to={`/workspaces/${workspaceId}/meetings/new`}>
         <button type="submit">create new meeting</button>
       </Link>
-      {props.meetings.map((meeting) => (
+      {meetings.map((meeting) => (
         <Link
           key={meeting._id} 
           to={`/workspaces/${workspaceId}/meetings/${meeting._id}`}

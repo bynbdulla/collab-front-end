@@ -50,6 +50,7 @@ const MeetingForm = ({ handleAddMeeting }) => {
           name="name"
           value={formData.name}
           onChange={handleChange}
+          id="name"
           required
         />
         <label htmlFor="description">Description: </label>
