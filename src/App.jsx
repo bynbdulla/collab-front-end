@@ -10,9 +10,10 @@ import WorkspaceList from "./pages/WorkspaceList";
 import MeetingList from "./pages/MeetingList";
 import WorkspaceForm from "./pages/WorkspaceForm";
 import MeetingForm from "./pages/MeetingForm";
+import TaskForm from "./pages/TaskForm";
 import WorkspaceDetails from "./pages/WorkspaceDetails";
 import WorkspaceUpdate from "./pages/WorkspaceUpdate";
-import MeetingsUpdate from "./pages/MeetingsUpdate"
+import MeetingsUpdate from "./pages/MeetingsUpdate";
 import * as workspaceService from "./services/workspace";
 import * as meetingService from "./services/meeting";
 import MeetingsDetails from "./pages/MeetingsDetails";
@@ -29,6 +30,7 @@ const App = () => {
   const [user, setUser] = useState(getUserFromToken());
   const [workspaces, setWorkspaces] = useState([]);
   const [meetings, setMeetings] = useState([]);
+  const [tasks, setTasks] = useState([]);
 
   const navigate = useNavigate();
 
@@ -55,6 +57,11 @@ const App = () => {
     setMeetings([newMeeting, ...meetings]);
     navigate(`/workspaces/${workspaceId}/meetings`);
   };
+  const handleAddTask = async (workspaceId, formData) => {
+    const newTask = await taskService.create(workspaceId, formData);
+    setTasks([newTask, ...meetings]);
+    navigate(`/workspaces/${workspaceId}/tasks`);
+  };
 
   const handleDeleteWorkspace = async (workspaceId) => {
     const deletedWorkspace =
@@ -65,7 +72,10 @@ const App = () => {
     navigate("/workspaces");
   };
   const handleDeleteMeeting = async (meetingId, workspaceId) => {
-    const deletedMeeting = await meetingService.deleteMeeting(workspaceId, meetingId);
+    const deletedMeeting = await meetingService.deleteMeeting(
+      workspaceId,
+      meetingId,
+    );
     setMeetings(meetings.filter((meeting) => meeting._id !== meetingId));
     navigate(`/workspaces/${workspaceId}/meetings`);
   };
@@ -80,15 +90,17 @@ const App = () => {
     });
     setWorkspaces(updatedWorkspaceArr);
   };
-  const handleUpdateMeeting = async (workspaceId,meetingId, formData) => {
+  const handleUpdateMeeting = async (workspaceId, meetingId, formData) => {
     const updatedMeeting = await meetingService.update(
       workspaceId,
-      meetingId ,
+      meetingId,
       formData,
     );
-     setMeetings(meetings.map((meeting) => {
-      return meeting._id === meetingId ? updatedMeeting : meeting;
-    }))
+    setMeetings(
+      meetings.map((meeting) => {
+        return meeting._id === meetingId ? updatedMeeting : meeting;
+      }),
+    );
     // return updatedMeeting
   };
 
@@ -141,11 +153,28 @@ const App = () => {
                 element={<MeetingList />}
               />
 
-              <Route path="/workspaces/:workspaceId/meetings/:meetingId" element={<MeetingsDetails user={user}
-                    handleDeleteMeeting={handleDeleteMeeting} />} />
+              <Route
+                path="/workspaces/:workspaceId/meetings/:meetingId"
+                element={
+                  <MeetingsDetails
+                    user={user}
+                    handleDeleteMeeting={handleDeleteMeeting}
+                  />
+                }
+              />
 
-              <Route path="/workspaces/:workspaceId/meetings/:meetingId/edit" element={<MeetingsUpdate 
-                    handleUpdateMeeting={handleUpdateMeeting} />} />
+              <Route
+                path="/workspaces/:workspaceId/meetings/:meetingId/edit"
+                element={
+                  <MeetingsUpdate handleUpdateMeeting={handleUpdateMeeting} />
+                }
+              />
+
+              {/* Tasks routes */}
+              <Route
+                path="workspaces/:workspaceId/tasks"
+                element={<TaskForm handleAddTask={handleAddTask} />}
+              />
             </>
           ) : (
             <>
