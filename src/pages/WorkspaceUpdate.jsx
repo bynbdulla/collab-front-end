@@ -93,7 +93,7 @@ const WorkspaceUpdate = (props) => {
             onChange={handleMembersChange}
           >
             {allUsers.map((user) => (
-            <option key={user._id} value={user._id}>  {/* ✅ Added key and changed to _id */}
+            <option key={user._id} value={user._id}>  
               {user.username}
             </option>
           ))}

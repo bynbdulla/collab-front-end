@@ -12,9 +12,10 @@ import WorkspaceForm from "./pages/WorkspaceForm";
 import MeetingForm from "./pages/MeetingForm";
 import WorkspaceDetails from "./pages/WorkspaceDetails";
 import WorkspaceUpdate from "./pages/WorkspaceUpdate";
+import MeetingsUpdate from "./pages/MeetingsUpdate"
 import * as workspaceService from "./services/workspace";
 import * as meetingService from "./services/meeting";
-// import MeetingsDetails from "./pages/MeetingsDetails";
+import MeetingsDetails from "./pages/MeetingsDetails";
 
 const getUserFromToken = () => {
   const token = localStorage.getItem("token");
@@ -37,14 +38,9 @@ const App = () => {
 
       setWorkspaces(workspacesData);
     };
-    // const fetchAllMeetings = async () => {
-    //   const meetingsData = await meetingService.index()
-    //     console.log('meetingsData:', meetingsData)
-    //     setMeetings(meetingsData)
-    // }
+
     if (user) {
       fetchAllWorkspaces();
-      // fetchAllMeetings()
     }
   }, [user]);
 
@@ -69,7 +65,7 @@ const App = () => {
     navigate("/workspaces");
   };
   const handleDeleteMeeting = async (meetingId, workspaceId) => {
-    const deletedMeeting = await meetingService.deleteMeeting(meetingId);
+    const deletedMeeting = await meetingService.deleteMeeting(workspaceId, meetingId);
     setMeetings(meetings.filter((meeting) => meeting._id !== meetingId));
     navigate(`/workspaces/${workspaceId}/meetings`);
   };
@@ -83,6 +79,17 @@ const App = () => {
       return workspace._id === workspaceId ? updateWorkspace : workspace;
     });
     setWorkspaces(updatedWorkspaceArr);
+  };
+  const handleUpdateMeeting = async (workspaceId,meetingId, formData) => {
+    const updatedMeeting = await meetingService.update(
+      workspaceId,
+      meetingId ,
+      formData,
+    );
+     setMeetings(meetings.map((meeting) => {
+      return meeting._id === meetingId ? updatedMeeting : meeting;
+    }))
+    // return updatedMeeting
   };
 
   return (
@@ -134,8 +141,11 @@ const App = () => {
                 element={<MeetingList />}
               />
 
-              {/* <Route path="/workspaces/:workspaceId/meetings/:meetingId" element={<MeetingsDetails user={user}
-                    handleDeleteMeeting={handleDeleteMeeting} />} /> */}
+              <Route path="/workspaces/:workspaceId/meetings/:meetingId" element={<MeetingsDetails user={user}
+                    handleDeleteMeeting={handleDeleteMeeting} />} />
+
+              <Route path="/workspaces/:workspaceId/meetings/:meetingId/edit" element={<MeetingsUpdate 
+                    handleUpdateMeeting={handleUpdateMeeting} />} />
             </>
           ) : (
             <>
