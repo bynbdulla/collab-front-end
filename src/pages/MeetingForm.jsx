@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
 
 const MeetingForm = ({ handleAddMeeting }) => {
@@ -13,6 +13,14 @@ const MeetingForm = ({ handleAddMeeting }) => {
     location: "",
   });
 
+  // useEffect(() => {
+  //   const fetchMeetings = async () => {
+  //     const meetingsData = await index();
+  //     setAllUsers(meet);
+  //   };
+  //   fetchMeetings();
+  // }, []);
+
   const handleChange = (event) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
   };
@@ -25,7 +33,7 @@ const MeetingForm = ({ handleAddMeeting }) => {
         workspaceId,
       };
       console.log("Submitting:", formDataWithWorkspace);
-      await handleAddMeeting(formDataWithWorkspace);
+      await handleAddMeeting(workspaceId, formDataWithWorkspace);
       navigate(`/workspaces/${workspaceId}/meetings`);
     } catch (err) {
       console.error("Error creating meeting", err);
