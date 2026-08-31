@@ -1,23 +1,35 @@
 import { useState } from "react";
+import { useNavigate, useParams } from "react-router";
 
-const MeetingForm = (props) => {
+const MeetingForm = ({ handleAddMeeting }) => {
+  const { workspaceId } = useParams();
+  const navigate = useNavigate();
 
-  const initialState = {
+  const [formData, setFormData] = useState({
     name: "",
     description: "",
     meetingDate: "",
-    location: ""
+    meetingTime: "",
+    location: "",
+  });
+
+  const handleChange = (event) => {
+    setFormData({ ...formData, [event.target.name]: event.target.value });
   };
 
-  const [formData, setFormData] = useState(initialState);
-
-  const handleChange = (evt) => {
-    setFormData({ ...formData, [evt.target.name]: evt.target.value });
-  };
-
-  const handleSubmit = (evt) => {
-    evt.preventDefault();
-    props.handleAddMeeting(formData);
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const formDataWithWorkspace = {
+        ...formData,
+        workspaceId,
+      };
+      console.log("Submitting:", formDataWithWorkspace);
+      await handleAddMeeting(formDataWithWorkspace);
+      navigate(`/workspaces/${workspaceId}/meetings`);
+    } catch (err) {
+      console.error("Error creating meeting", err);
+    }
   };
 
   return (
@@ -42,8 +54,15 @@ const MeetingForm = (props) => {
         <label htmlFor="meeting-date">Meeting Date: </label>
         <input
           type="date"
-          name="meeting-date"
+          name="meetingDate"
           value={formData.meetingDate}
+          onChange={handleChange}
+        />
+        <label htmlFor="meeting-time">Meeting Time: </label>
+        <input
+          type="time"
+          name="meetingTime"
+          value={formData.meetingTime}
           onChange={handleChange}
         />
         <label htmlFor="location">Location: </label>
@@ -51,6 +70,7 @@ const MeetingForm = (props) => {
           type="text"
           name="location"
           onChange={handleChange}
+          value={formData.location}
         />
 
         <button type="submit">Create Meeting</button>

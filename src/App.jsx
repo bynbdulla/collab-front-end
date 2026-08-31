@@ -1,18 +1,20 @@
 import Nav from "./components/Nav";
 import SignUpForm from "./pages/SignUpForm";
 import "./App.css";
-import { Routes, Route, useNavigate } from "react-router";
+import { Routes, Route, useNavigate, useParams } from "react-router";
 import { useState, useEffect } from "react";
 import SignInForm from "./pages/SignInForm";
 import Landing from "./pages/Landing";
 import Dashboard from "./pages/Dashboard";
 import WorkspaceList from "./pages/WorkspaceList";
+import MeetingList from "./pages/MeetingList";
 import WorkspaceForm from "./pages/WorkspaceForm";
+import MeetingForm from "./pages/MeetingForm";
 import WorkspaceDetails from "./pages/WorkspaceDetails";
 import WorkspaceUpdate from "./pages/WorkspaceUpdate";
 import * as workspaceService from "./services/workspace";
-import * as meetingService from "./services/meeting"
-import MeetingForm from "./pages/WorkspaceForm";
+import * as meetingService from "./services/meeting";
+import MeetingsDetails from "./pages/MeetingsDetails";
 
 const getUserFromToken = () => {
   const token = localStorage.getItem("token");
@@ -38,30 +40,59 @@ const App = () => {
     if (user) fetchAllWorkspaces();
   }, [user]);
 
+  // useEffect(() => {
+  //   const fetchAllMeetings = async () => {
+  //     const meetingsData = await meetingService.index()
+  //       console.log('meetingsData:', meetingsData)
+  //       setMeetings(meetingsData)
+  //   }
+  //   if (user) fetchAllMeetings()
+  // }, [user])
+
   const handleAddWorkspace = async (formData) => {
     const newWorkspace = await workspaceService.create(formData);
     setWorkspaces([newWorkspace, ...workspaces]);
     navigate("/workspaces");
   };
+
+
   const handleAddMeeting = async (formData) => {
-    const newMeeting = await meetingService.create(formData);
-    setMeetings([newMeeting, ...meetings]);
-    navigate("/workspaces/:workspaceId/meetings");
+    // try {
+      const newMeeting = await meetingService.create(formData);
+      setMeetings([newMeeting, ...meetings]);
+      navigate(`/workspaces/${formData.workspaceId}/meetings`);
+    // } catch (err) {
+    //   console.log("Failed to create a meeting", err);
+    // }
   };
 
   const handleDeleteWorkspace = async (workspaceId) => {
-    const deletedWorkspace = await workspaceService.deleteWorkspace(workspaceId)
-    setWorkspaces(workspaces.filter((workspace) => workspace._id !== workspaceId))
-    navigate('/workspaces')
+    const deletedWorkspace =
+      await workspaceService.deleteWorkspace(workspaceId);
+    setWorkspaces(
+      workspaces.filter((workspace) => workspace._id !== workspaceId),
+    );
+    navigate("/workspaces");
+  };
+  const handleDeleteMeeting = async (meetingId) => {
+    const deletedMeeting =
+      await meetingService.deleteMeeting(meetingId);
+    setMeetings(
+      workspaces.filter((meetings) => meetings._id !== meetingId),
+    );
+    navigate("/workspaces");
   };
 
-  const handleUpdateWorkspace = async (workspaceId, formData) =>{
-    const updateWorkspace = await workspaceService.update(workspaceId, formData)
+  const handleUpdateWorkspace = async (workspaceId, formData) => {
+    const updateWorkspace = await workspaceService.update(
+      workspaceId,
+      formData,
+    );
     const updatedWorkspaceArr = workspaces.map((workspace) => {
-      return workspace._id === workspaceId ? updateWorkspace : workspace 
-    })
-    setWorkspaces(updatedWorkspaceArr)
-  }
+      return workspace._id === workspaceId ? updateWorkspace : workspace;
+    });
+    setWorkspaces(updatedWorkspaceArr);
+  };
 
   return (
     <div>
@@ -87,7 +118,14 @@ const App = () => {
                   />
                 }
               />
-              <Route path="/workspaces/:workspaceId/edit" element={<WorkspaceUpdate handleUpdateWorkspace={handleUpdateWorkspace} />} />
+              <Route
+                path="/workspaces/:workspaceId/edit"
+                element={
+                  <WorkspaceUpdate
+                    handleUpdateWorkspace={handleUpdateWorkspace}
+                  />
+                }
+              />
               <Route
                 path="/workspaces/new"
                 element={
@@ -95,7 +133,18 @@ const App = () => {
                 }
               />
               {/* Meetings routes */}
-              <Route path="/workspaces/:workspaceId/meetings/new" element={<MeetingForm handleAddMeeting={handleAddMeeting} />} />
+              <Route
+                path="/workspaces/:workspaceId/meetings/new"
+                element={<MeetingForm handleAddMeeting={handleAddMeeting} />}
+              />
+
+              <Route
+                path="/workspaces/:workspaceId/meetings"
+                element={<MeetingList meetings={meetings} />}
+              />
+
+              <Route path="/workspaces/:workspaceId/meetings/:meetingId" element={<MeetingsDetails user={user}
+                    handleDeleteMeeting={handleDeleteMeeting} />} />
             </>
           ) : (
             <>
