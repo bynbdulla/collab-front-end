@@ -37,7 +37,17 @@ const WorkspaceDetails = (props) => {
       </header>
       <p className="workspace-text">{workspace.description}</p>
       <h4>Members: </h4>
-      <p></p>
+      <div>
+        {workspace.members && workspace.members.length > 0 ? (
+          workspace.members.map((member) => (
+            <div className="member-container">
+            <p className="member" key={member._id} >{member.username}</p>
+            </div>
+          ))
+        ) : (
+          <p>No members</p>
+        )}
+      </div>
       <p className="workspace-owner">
         Created by {workspace.owner?.username || "Unknown user"} on{" "}
         <span>{new Date(workspace.createdAt).toLocaleDateString()}</span>

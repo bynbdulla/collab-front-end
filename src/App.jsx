@@ -14,12 +14,13 @@ import MeetingForm from "./pages/MeetingForm";
 import TaskForm from "./pages/TaskForm";
 import WorkspaceDetails from "./pages/WorkspaceDetails";
 import MeetingsDetails from "./pages/MeetingsDetails";
-import TasksDetails from "./pages/TasksDetails"
+import TasksDetails from "./pages/TasksDetails";
 import WorkspaceUpdate from "./pages/WorkspaceUpdate";
 import MeetingsUpdate from "./pages/MeetingsUpdate";
+import TasksUpdate from "./pages/TasksUpdate"
 import * as workspaceService from "./services/workspace";
 import * as meetingService from "./services/meeting";
-import * as taskService from "./services/task"
+import * as taskService from "./services/task";
 
 const getUserFromToken = () => {
   const token = localStorage.getItem("token");
@@ -82,11 +83,8 @@ const App = () => {
     setMeetings(meetings.filter((meeting) => meeting._id !== meetingId));
     navigate(`/workspaces/${workspaceId}/meetings`);
   };
-  const handleDeleteTask = async ( workspaceId, taskId,) => {
-    const deletedTask = await taskService.deleteTask(
-      workspaceId,
-      taskId,
-    );
+  const handleDeleteTask = async (workspaceId, taskId) => {
+    const deletedTask = await taskService.deleteTask(workspaceId, taskId);
     setTasks(tasks.filter((task) => task._id !== taskId));
     navigate(`/workspaces/${workspaceId}/tasks`);
   };
@@ -112,7 +110,18 @@ const App = () => {
         return meeting._id === meetingId ? updatedMeeting : meeting;
       }),
     );
-    // return updatedMeeting
+  };
+  const handleUpdateTask = async (workspaceId, taskId, formData) => {
+    const updatedTask = await taskService.update(
+      workspaceId,
+      taskId,
+      formData,
+    );
+    setTasks(
+      tasks.map((task) => {
+        return task._id === taskId ? updatedTask : task;
+      }),
+    );
   };
 
   return (
@@ -131,12 +140,9 @@ const App = () => {
                 element={<WorkspaceList workspaces={workspaces} />}
               />
               <Route
-                path="/workspaces/:workspaceId"
+                path="/workspaces/new"
                 element={
-                  <WorkspaceDetails
-                    user={user}
-                    handleDeleteWorkspace={handleDeleteWorkspace}
-                  />
+                  <WorkspaceForm handleAddWorkspace={handleAddWorkspace} />
                 }
               />
               <Route
@@ -148,13 +154,6 @@ const App = () => {
                 }
               />
               <Route
-                path="/workspaces/new"
-                element={
-                  <WorkspaceForm handleAddWorkspace={handleAddWorkspace} />
-                }
-              />
-              {/* Meetings routes */}
-              <Route
                 path="/workspaces/:workspaceId/meetings/new"
                 element={<MeetingForm handleAddMeeting={handleAddMeeting} />}
               />
@@ -163,7 +162,6 @@ const App = () => {
                 path="/workspaces/:workspaceId/meetings"
                 element={<MeetingList />}
               />
-
               <Route
                 path="/workspaces/:workspaceId/meetings/:meetingId"
                 element={
@@ -173,27 +171,42 @@ const App = () => {
                   />
                 }
               />
-
               <Route
                 path="/workspaces/:workspaceId/meetings/:meetingId/edit"
                 element={
                   <MeetingsUpdate handleUpdateMeeting={handleUpdateMeeting} />
                 }
               />
-
-              {/* Tasks routes */}
               <Route
                 path="/workspaces/:workspaceId/tasks/new"
                 element={<TaskForm handleAddTask={handleAddTask} />}
               />
               <Route
+                path="/workspaces/:workspaceId/tasks/:taskId/edit"
+                element={<TasksUpdate handleUpdateTask={handleUpdateTask} />}
+              />
+              <Route
                 path="/workspaces/:workspaceId/tasks"
                 element={<TaskList />}
               />
-              <Route path="/workspaces/:workspaceId/tasks/:taskId" element={<TasksDetails user={user}
-                    handleDeleteTask={handleDeleteTask} />} />
-
-              {/* <Route path="/workspaces/:workspaceId/tasks/:taskId" element={<TasksUpdate />} /> */}
+              <Route
+                path="/workspaces/:workspaceId/tasks/:taskId"
+                element={
+                  <TasksDetails
+                    user={user}
+                    handleDeleteTask={handleDeleteTask}
+                  />
+                }
+              />
+              <Route
+                path="/workspaces/:workspaceId"
+                element={
+                  <WorkspaceDetails
+                    user={user}
+                    handleDeleteWorkspace={handleDeleteWorkspace}
+                  />
+                }
+              />
             </>
           ) : (
             <>

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
 import * as workspaceService from "../services/workspace";
-import {index as getAllUsers} from "../services/user"
+import { index as getAllUsers } from "../services/user";
 
 const WorkspaceUpdate = (props) => {
   const { workspaceId } = useParams();
@@ -50,7 +50,6 @@ const WorkspaceUpdate = (props) => {
       console.error("Failed to update:", error);
     }
   };
-  if (loading) return <p>Loading...</p>;
 
   const handleMembersChange = (event) => {
     const selected = Array.from(
@@ -60,7 +59,11 @@ const WorkspaceUpdate = (props) => {
     setFormData({ ...formData, members: selected });
   };
 
-  if (!formData) return <p>Loading...</p>;
+  if (loading) return <p>Loading...</p>;
+
+  const selectedUsers = allUsers.filter((user) =>
+    formData.members.includes(user._id),
+  );
 
   return (
     <div className="container">
@@ -88,18 +91,20 @@ const WorkspaceUpdate = (props) => {
         <label htmlFor="members">members: </label>
         <div>
           <select
+            id="members"
             name="members"
             multiple
             value={formData.members}
             onChange={handleMembersChange}
           >
             {allUsers.map((user) => (
-            <option key={user._id} value={user._id}>  
-              {user.username}
-            </option>
-          ))}
+              <option key={user._id} value={user._id}>
+                {user.username}
+              </option>
+            ))}
           </select>
         </div>
+        
         <button type="submit">Submit</button>
       </form>
     </div>
