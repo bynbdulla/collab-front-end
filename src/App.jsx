@@ -8,15 +8,18 @@ import Landing from "./pages/Landing";
 import Dashboard from "./pages/Dashboard";
 import WorkspaceList from "./pages/WorkspaceList";
 import MeetingList from "./pages/MeetingList";
+import TaskList from "./pages/TaskList";
 import WorkspaceForm from "./pages/WorkspaceForm";
 import MeetingForm from "./pages/MeetingForm";
 import TaskForm from "./pages/TaskForm";
 import WorkspaceDetails from "./pages/WorkspaceDetails";
+import MeetingsDetails from "./pages/MeetingsDetails";
+import TasksDetails from "./pages/TasksDetails"
 import WorkspaceUpdate from "./pages/WorkspaceUpdate";
 import MeetingsUpdate from "./pages/MeetingsUpdate";
 import * as workspaceService from "./services/workspace";
 import * as meetingService from "./services/meeting";
-import MeetingsDetails from "./pages/MeetingsDetails";
+import * as taskService from "./services/task"
 
 const getUserFromToken = () => {
   const token = localStorage.getItem("token");
@@ -59,7 +62,7 @@ const App = () => {
   };
   const handleAddTask = async (workspaceId, formData) => {
     const newTask = await taskService.create(workspaceId, formData);
-    setTasks([newTask, ...meetings]);
+    setTasks([newTask, ...tasks]);
     navigate(`/workspaces/${workspaceId}/tasks`);
   };
 
@@ -78,6 +81,14 @@ const App = () => {
     );
     setMeetings(meetings.filter((meeting) => meeting._id !== meetingId));
     navigate(`/workspaces/${workspaceId}/meetings`);
+  };
+  const handleDeleteTask = async ( workspaceId, taskId,) => {
+    const deletedTask = await taskService.deleteTask(
+      workspaceId,
+      taskId,
+    );
+    setTasks(tasks.filter((task) => task._id !== taskId));
+    navigate(`/workspaces/${workspaceId}/tasks`);
   };
 
   const handleUpdateWorkspace = async (workspaceId, formData) => {
@@ -172,9 +183,17 @@ const App = () => {
 
               {/* Tasks routes */}
               <Route
-                path="workspaces/:workspaceId/tasks"
+                path="/workspaces/:workspaceId/tasks/new"
                 element={<TaskForm handleAddTask={handleAddTask} />}
               />
+              <Route
+                path="/workspaces/:workspaceId/tasks"
+                element={<TaskList />}
+              />
+              <Route path="/workspaces/:workspaceId/tasks/:taskId" element={<TasksDetails user={user}
+                    handleDeleteTask={handleDeleteTask} />} />
+
+              {/* <Route path="/workspaces/:workspaceId/tasks/:taskId" element={<TasksUpdate />} /> */}
             </>
           ) : (
             <>

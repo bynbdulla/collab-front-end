@@ -21,16 +21,23 @@ const WorkspaceDetails = (props) => {
       <header className="workspace-header">
         <h2>{workspace.name}</h2>
         <div className="actions">
-          <button onClick={() => navigate(`/workspaces/${workspaceId}/edit`)} className="actions-btn">
+          <button
+            onClick={() => navigate(`/workspaces/${workspaceId}/edit`)}
+            className="actions-btn"
+          >
             edit
           </button>
-          <button onClick={() => props.handleDeleteWorkspace(workspaceId)} className="actions-btn">
+          <button
+            onClick={() => props.handleDeleteWorkspace(workspaceId)}
+            className="actions-btn"
+          >
             delete
           </button>
         </div>
       </header>
       <p className="workspace-text">{workspace.description}</p>
       <h4>Members: </h4>
+      <p></p>
       <p className="workspace-owner">
         Created by {workspace.owner?.username || "Unknown user"} on{" "}
         <span>{new Date(workspace.createdAt).toLocaleDateString()}</span>

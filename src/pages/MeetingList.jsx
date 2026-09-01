@@ -3,7 +3,6 @@ import { useParams } from "react-router";
 import { useEffect } from "react";
 import * as meetingService from "../services/meeting";
 import { useState } from "react";
-// import MeetingDetails from "./MeetingDetails";
 
 const MeetingList = () => {
   const { workspaceId } = useParams();

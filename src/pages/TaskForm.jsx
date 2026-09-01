@@ -1,18 +1,31 @@
 import { useState } from "react";
+import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
+import * as workspaceService from "../services/workspace";
 
-const TaskForm = ({ handleAddForm }) => {
+const TaskForm = ({ handleAddTask }) => {
   const { workspaceId } = useParams();
   const navigate = useNavigate();
+  const [workspace, setWorkspace] = useState(null);
 
   const [formData, setFormData] = useState({
     name: "",
     description: "",
-    priority: "",
+    priority: "High",
     assignedTo: "",
     workspaceId: "",
-    status: "",
+    status: "To Do",
   });
+  useEffect(() => {
+    const fetchWorkspace = async () => {
+      const workspaceData = await workspaceService.show(workspaceId);
+      setWorkspace(workspaceData);
+    };
+    fetchWorkspace();
+  }, [workspaceId]);
+
+  const memberNames =
+    workspace?.members?.map((member) => member.username) || [];
 
   const handleChange = (event) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
@@ -28,6 +41,7 @@ const TaskForm = ({ handleAddForm }) => {
       console.log("Submitting:", formDataWithWorkspace);
       await handleAddTask(workspaceId, formDataWithWorkspace);
       navigate(`/workspaces/${workspaceId}/tasks`);
+      
     } catch (err) {
       console.error("Error creating task", err);
     }
@@ -53,33 +67,41 @@ const TaskForm = ({ handleAddForm }) => {
           value={formData.description}
           onChange={handleChange}
         />
-        priority: "",
-    assignedTo: "",
-    workspaceId: "",
-    status: "",
         <label htmlFor="priority">Priority: </label>
-        <select>
-          
+        <select name="priority" onChange={handleChange}>
+          <option value="High">High</option>
+          <option value="Medium">Medium</option>
+          <option value="Low">Low</option>
         </select>
-        <label htmlFor="meeting-time">Meeting Time: </label>
-        <input
-          type="time"
-          name="meetingTime"
-          value={formData.meetingTime}
+        <label htmlFor="assignedTo">Assignee: </label>
+        <select
+          name="assignedTo"
+          value={formData.assignedTo}
           onChange={handleChange}
-        />
-        <label htmlFor="location">Location: </label>
-        <input
-          type="text"
-          name="location"
-          onChange={handleChange}
-          value={formData.location}
-        />
+        >
+          <option value="">-- Select a member --</option>
+          {memberNames.length > 0 ? (
+            memberNames.map((memberName) => (
+              <option key={memberName} value={memberName}>
+                {memberName}
+              </option>
+            ))
+          ) : (
+            <option disabled>No members in workspace</option>
+          )}
+        </select>
 
-        <button type="submit">Create Meeting</button>
+        
+        <label htmlFor="status">Status: </label>
+        <select name="status" value={formData.status} onChange={handleChange}>
+          <option value="To Do">To Do</option>
+          <option value="In Progress">In Progress</option>
+          <option value="Done">Done</option>
+        </select>
+        <button type="submit">Create Task</button>
       </form>
     </main>
   );
 };
 
-export default MeetingForm;
+export default TaskForm;

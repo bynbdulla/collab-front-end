@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
 import * as workspaceService from "../services/workspace";
+import {index as getAllUsers} from "../services/user"
 
 const WorkspaceUpdate = (props) => {
   const { workspaceId } = useParams();
@@ -25,7 +26,7 @@ const WorkspaceUpdate = (props) => {
           members: workspace.members || [],
         });
 
-        const users = await workspaceService.getAllUsers();
+        const users = await getAllUsers();
         setAllUsers(users);
       } catch (error) {
         console.error("Failed to fetch:", error);

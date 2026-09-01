@@ -17,9 +17,6 @@ const Nav = (props) => {
                         <Link to="/">Dashboard</Link>
                     </li>
                     <li>
-                        <Link to="/tasks">Tasks</Link>
-                    </li>
-                    <li>
                         <Link to="/workspaces/:workspaceId/meetings">Meetings</Link>
                     </li>
                     <li>
