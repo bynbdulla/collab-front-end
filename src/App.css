@@ -7,6 +7,7 @@
   justify-content: center;
   width: 100%;
   padding: 48px 24px;
+  min-height: calc(100vh - 60px);
 }
 
 @media (max-width: 600px) {
@@ -20,18 +21,32 @@ nav {
   justify-content: space-between;
   align-items: center;
   background-color: var(--color-surface);
-  padding: 2px 10px;
+  padding: 16px 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 .nav-brand {
-  font-weight: bolder;
+  font-weight: 700;
   font-size: 1.5rem;
+  width: 70px;
+  display: flex;
+  align-items: center;
 }
 
 nav ul {
   display: flex;
-  gap: 16px;
+  gap: 32px;
   list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+nav a {
+  text-decoration: none;
+  color: var(--color-text);
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: color 0.2s ease;
 }
 
 nav a:hover {
@@ -128,12 +143,64 @@ select:focus {
   font-family: Georgia, "Times New Roman", Times, serif;
 }
 
-.actions-btn:hover{
-background: none;
-color: maroon;
-font-size: larger;
+.actions-btn:hover {
+  background: none;
+  color: maroon;
+  font-size: larger;
 }
 
-.container{
-  width: 80vh;
+.container {
+  width: 100%
+}
+
+.members-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.member {
+  margin: 0;
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 7px;
+  max-width: fit-content;
+}
+
+.member:hover {
+  background-color: chocolate;
+}
+
+.task-card {
+  width: 100vh;
+  border: 1.5px solid black;
+  margin-top: 10px;
+  border-radius: 7px;
+  padding: 14px;
+  padding-left: 2rem;
+  background-color: antiquewhite;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}
+
+.all-tasks {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+  gap: 24px;
+}
+.all-tasks h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--color-text);
+  letter-spacing: -0.5px;
+}
+
+p {
+  font-family: -apple-system;
 }
