@@ -38,13 +38,11 @@ const MeetingList = () => {
           <article className="card">
             <header>
               <h2>{meeting.name}</h2>
-              <p className="meeting-owner">
-                Created at {meeting.meetingDate || "Unknown user"}
-              </p>
+             
             </header>
-            <p className="meeting-desc">{meeting.description}</p>
+            
             <footer className="meeting-footer">
-              <span>{new Date(meeting.createdAt).toLocaleDateString()}</span>
+              <span>{meeting.meetingsDate}</span>
             </footer>
           </article>
         </Link>
