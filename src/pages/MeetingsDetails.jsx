@@ -7,9 +7,18 @@ const MeetingsDetails = (props) => {
   const [meetings, setMeetings] = useState(null);
   const navigate = useNavigate();
 
+  // const formattedDate = meetings.meetingDate
+  // ? new Date(meetings.meetingDate).toLocaleDateString("en-US", {
+  //     year: "numeric",
+  //     month: "long",
+  //     day: "numeric",
+  //   })
+  // : "Not specified";
+
+
   useEffect(() => {
     const fetchMeeting = async () => {
-      const meetingData = await meetingService.show(workspaceId ,meetingId);
+      const meetingData = await meetingService.show(workspaceId, meetingId);
       setMeetings(meetingData);
     };
     fetchMeeting();
@@ -17,26 +26,59 @@ const MeetingsDetails = (props) => {
 
   if (!meetings) return <main>Loading...</main>;
   return (
-    <article className="card">
-      <header className="meetings-header">
-        <h2>{meetings.name}</h2>
-        <div className="actions">
-          <button onClick={() => navigate(`/workspaces/${workspaceId}/meetings/${meetingId}/edit`)} className="actions-btn">
-            EDIT
-          </button>
-          <button onClick={() => props.handleDeleteMeeting(meetingId, workspaceId)} className="actions-btn">
-            DELETE
-          </button>
+    <main className="meetings-details">
+      <article className="meetings-card">
+        <header className="meetings-header">
+          <div className="header-content">
+            <h1>{meetings.name}</h1>
+          
+          </div>
+          <div className="header-actions">
+            <button
+              onClick={() =>
+                navigate(
+                  `/workspaces/${workspaceId}/meetings/${meetingId}/edit`,
+                )
+              }
+              className="btn-edit"
+            >
+              EDIT
+            </button>
+            <button
+              onClick={() => props.handleDeleteMeeting(meetingId, workspaceId)}
+              className="btn-delete"
+            >
+              DELETE
+            </button>
+          </div>
+        </header>
+        <div className="meetings-meta">
+          <div className="meta-item">
+            <p className="meta-value">
+              {meetings.description}
+            </p>
+          </div>
+          <div className="meta-item">
+          <p className="meta-value">
+            <strong>Date: </strong>
+            {meetings.meetingDate}
+          </p>
+          </div>
+          <div className="meta-item">
+          <p className="meta-value">
+            <strong>Time: </strong>
+            {meetings.meetingTime}
+          </p>
+          </div>
+          <div className="meta-item">
+          <p className="meta-value">
+            <strong>Location: </strong>
+            {meetings.location}
+          </p>
+          </div>
         </div>
-      </header>
-      <p className="meetings-text"><strong>Description: </strong>{meetings.description}</p>
-      <p className="meetings-text"><strong>Date: </strong>{meetings.meetingDate}</p>
-      <p className="meetings-text"><strong>Time: </strong>{meetings.meetingTime}</p>
-      <p className="meetings-text"><strong>Location: </strong>{meetings.location}</p>
-      
-
-  
-    </article>
+      </article>
+    </main>
   );
 };
 export default MeetingsDetails;

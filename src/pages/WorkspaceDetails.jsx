@@ -72,7 +72,6 @@ const WorkspaceDetails = (props) => {
   return (
     <main className="workspace-details">
       <article className="workspace-card">
-        {/* Header Section */}
         <header className="workspace-header">
           <div className="header-content">
             <h1>{workspace.name}</h1>
@@ -96,7 +95,6 @@ const WorkspaceDetails = (props) => {
           </div>
         </header>
 
-        {/* Meta Information */}
         <div className="workspace-meta">
           <div className="meta-item">
             <span className="meta-label">Created by</span>

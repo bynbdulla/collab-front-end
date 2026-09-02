@@ -41,49 +41,79 @@ const MeetingForm = ({ handleAddMeeting }) => {
   };
 
   return (
-    <main className="card">
-      <form onSubmit={handleSubmit}>
-        <h1>Create a meeting</h1>
-        <label htmlFor="name">Meeting name: </label>
-        <input
-          type="text"
-          name="name"
-          value={formData.name}
-          onChange={handleChange}
-          id="name"
-          required
-        />
-        <label htmlFor="description">Description: </label>
-        <input
-          type="text"
-          name="description"
-          value={formData.description}
-          onChange={handleChange}
-        />
-        <label htmlFor="meeting-date">Meeting Date: </label>
-        <input
-          type="date"
-          name="meetingDate"
-          value={formData.meetingDate}
-          onChange={handleChange}
-        />
-        <label htmlFor="meeting-time">Meeting Time: </label>
-        <input
-          type="time"
-          name="meetingTime"
-          value={formData.meetingTime}
-          onChange={handleChange}
-        />
-        <label htmlFor="location">Location: </label>
-        <input
-          type="text"
-          name="location"
-          onChange={handleChange}
-          value={formData.location}
-        />
-
-        <button type="submit">Create Meeting</button>
-      </form>
+    <main className="meeting-form-container">
+      <div className="form-wrapper">
+        <div className="form-header">
+          <h1>Create a Meeting</h1>
+        </div>{" "}
+        <form onSubmit={handleSubmit} className="meeting-form">
+          <div className="form-group">
+            <label htmlFor="name" className="form-label">
+              Meeting name:{" "}
+            </label>
+            <input
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              id="name"
+              className="form-input"
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="description" className="form-label">
+              Description:{" "}
+            </label>
+            <input
+              type="text"
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              className="form-input"
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="meeting-date" className="form-label">
+              Meeting Date:{" "}
+            </label>
+            <input
+              type="date"
+              name="meetingDate"
+              value={formData.meetingDate}
+              onChange={handleChange}
+              className="form-input"
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="meeting-time" className="form-label">
+              Meeting Time:{" "}
+            </label>
+            <input
+              type="time"
+              name="meetingTime"
+              value={formData.meetingTime}
+              onChange={handleChange}
+              className="form-input"
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="location" className="form-label">
+              Location:{" "}
+            </label>
+            <input
+              type="text"
+              name="location"
+              onChange={handleChange}
+              value={formData.location}
+              className="form-input"
+            />
+          </div>
+          <div className="form-actions">
+          <button type="submit" className="btn-submit">Create Meeting</button>
+          </div>
+        </form>
+      </div>
     </main>
   );
 };

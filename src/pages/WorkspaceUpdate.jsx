@@ -100,13 +100,14 @@ const WorkspaceUpdate = (props) => {
         onSubmit={handleSubmit}
       >
         <div className="form-group">
-          <label htmlFor="name">Name:</label>
+          <label htmlFor="name" className="form-label">Name:</label>
           <input
             required
             type="text"
             name="name"
           value={formData.name}
           onChange={handleChange}
+          className="form-input"
         />
         </div>
         <div className="form-group"><label htmlFor="description">Description: </label>

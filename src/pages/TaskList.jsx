@@ -2,7 +2,7 @@ import { Link } from "react-router";
 import { useParams } from "react-router";
 import { useEffect } from "react";
 import * as taskService from "../services/task";
-import * as userService from "../services/user";
+// import * as userService from "../services/user";
 import { useState } from "react";
 
 const TaskList = () => {
@@ -30,31 +30,31 @@ const TaskList = () => {
     }
   }, [workspaceId]);
 
-    useEffect(() => {
-    const fetchCurrentUser = async () => {
-      try {
-        const user = await userService.getCurrentUser();
-        setCurrentUser(user);
-      } catch (error) {
-        console.error("Failed to fetch current user:", error);
-        const storedUser = JSON.parse(localStorage.getItem("user"));
-        setCurrentUser(storedUser);
-      }
-    };
-    fetchCurrentUser();
-  }, []);
+  //   useEffect(() => {
+  //   const fetchCurrentUser = async () => {
+  //     try {
+  //       const user = await userService.getCurrentUser();
+  //       setCurrentUser(user);
+  //     } catch (error) {
+  //       console.error("Failed to fetch current user:", error);
+  //       const storedUser = JSON.parse(localStorage.getItem("user"));
+  //       setCurrentUser(storedUser);
+  //     }
+  //   };
+  //   fetchCurrentUser();
+  // }, []);
 
-  useEffect(() => {
-    if (currentUser && tasks.length > 0) {
-      const filtered = tasks.filter((task) => {
-        const taskOwner = task.owner?._id || task.owner;
-        const taskAssignedTo = task.assignedTo?._id || task.assignedTo;
-        const userId = currentUser._id || currentUser.id;
-        return taskOwner === userId || taskAssignedTo === userId;
-      });
-      setFilteredTasks(filtered);
-    }
-  }, [tasks, currentUser]);
+  // useEffect(() => {
+  //   if (currentUser && tasks.length > 0) {
+  //     const filtered = tasks.filter((task) => {
+  //       const taskOwner = task.owner?._id || task.owner;
+  //       const taskAssignedTo = task.assignedTo?._id || task.assignedTo;
+  //       const userId = currentUser._id || currentUser.id;
+  //       return taskOwner === userId || taskAssignedTo === userId;
+  //     });
+  //     setFilteredTasks(filtered);
+  //   }
+  // }, [tasks, currentUser]);
 
   
 

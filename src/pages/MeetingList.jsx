@@ -26,27 +26,48 @@ const MeetingList = () => {
 
   return (
     <main className="meeting-list">
-      <h1>All meetings</h1>
-      <Link to={`/workspaces/${workspaceId}/meetings/new`}>
-        <button type="submit">create new meeting</button>
-      </Link>
-      {meetings.map((meeting) => (
+      <div className="meeting-list-header">
+        <div className="header-content">
+          <h1>All Meetings</h1>
+        </div>
         <Link
-          key={meeting._id} 
-          to={`/workspaces/${workspaceId}/meetings/${meeting._id}`}
+          to={`/workspaces/${workspaceId}/meetings/new`}
+          className="btn-create-meeting"
         >
-          <article className="card">
-            <header>
-              <h2>{meeting.name}</h2>
-             
-            </header>
-            
-            <footer className="meeting-footer">
-              <span>{meeting.meetingsDate}</span>
-            </footer>
-          </article>
+          + New Meeting
         </Link>
-      ))}
+      </div>
+      <div className="meetings-grid">
+        {meetings.map((meeting) => (
+          <Link
+            key={meeting._id}
+            to={`/workspaces/${workspaceId}/meetings/${meeting._id}`}
+            className="workspace-card-link"
+          >
+            <article className="meeting-card">
+              <header className="card-header">
+                <div className="card-header">
+                  <h2>{meeting.name}</h2>
+                </div>
+              </header>
+              <p className="meeting-desc">{meeting.description}</p>
+
+              <footer className="meeting-footer">
+                <div className="footer-info">
+                  <span className="date">{new Date(meeting.meetingDate).toLocaleDateString(
+                        "en-US",
+                        {
+                          year: "numeric",
+                          month: "short",
+                          day: "numeric",
+                        }
+                      )}</span>
+                </div>
+              </footer>
+            </article>
+          </Link>
+        ))}
+      </div>
     </main>
   );
 };

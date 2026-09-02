@@ -20,34 +20,34 @@ const index = async () => {
     }
 }
 
-const getCurrentUser = async ()=>{
-try {
-    const token = localStorage.getItem("token");
+// const getCurrentUser = async ()=>{
+// try {
+//     const token = localStorage.getItem("token");
     
-    if (!token) {
-      throw new Error("No authentication token found");
-    }
-    const res = await fetch(`${BASE_URL}/users/me`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    });
+//     if (!token) {
+//       throw new Error("No authentication token found");
+//     }
+//     const res = await fetch(`${BASE_URL}/users/me`, {
+//       method: "GET",
+//       headers: {
+//         Authorization: `Bearer ${token}`,
+//         "Content-Type": "application/json",
+//       },
+//     });
 
-    if (!res.ok) {
-      throw new Error(`Failed to fetch user: ${res.statusText}`);
-    }
+//     if (!res.ok) {
+//       throw new Error(`Failed to fetch user: ${res.statusText}`);
+//     }
 
-    const user = await res.json();
-    return user;
-  } catch (error) {
-    console.error("Error fetching current user:", error);
-    throw error;
-  }
-}
+//     const user = await res.json();
+//     return user;
+//   } catch (error) {
+//     console.error("Error fetching current user:", error);
+//     throw error;
+//   }
+// }
 
 export {
     index,
-    getCurrentUser
+    // getCurrentUser
 }

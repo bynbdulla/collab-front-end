@@ -156,7 +156,6 @@ button:disabled {
 }
 
 form input,
-textarea,
 select {
   padding: 12px;
   border-radius: 8px;
@@ -164,13 +163,12 @@ select {
 }
 
 form input:focus,
-textarea:focus,
 select:focus {
   border-color: var(--color-primary);
   outline: 2px solid var(--color-primary-soft);
 }
 
-.workspace-header {
+.workspace-header, .meetings-header, .tasks-header {
   display: flex;
   gap: 20px;
   align-items: baseline;
@@ -193,6 +191,22 @@ select:focus {
 
 .container {
   width: 100%;
+}
+.btn-submit {
+  flex: 1;
+  padding: 14px 24px;
+  background: var(--color-primary-dark);
+  color: rgb(3, 3, 39);
+  border: none;
+  border-radius: 10px;
+  font-weight: 400;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(168, 184, 240, 0.25);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-family: inherit;
 }
 
 .members-container {
@@ -483,7 +497,7 @@ h4 {
   }
 }
 
-.workspace-edit-container, .workspace-form-container {
+.workspace-edit-container,.meeting-edit-container, .workspace-form-container , .meeting-form-container, .task-form-container {
   display: flex;
   justify-content: center;
   width: 100%;
@@ -492,7 +506,7 @@ h4 {
   background: linear-gradient(180deg, #f8f9ff 0%, #f0f4ff 100%);
 }
 
-.workspace-edit-card {
+.workspace-edit-card, .meeting-edit-card, .task-edit-card {
   width: 100%;
   max-width: 700px;
   background: var(--color-surface);
@@ -528,7 +542,7 @@ h4 {
   line-height: 1.5;
 }
 
-.workspace-form {
+.workspace-form, .meeting-form, .task-form {
   display: flex;
   flex-direction: column;
   gap: 28px;
@@ -556,8 +570,7 @@ font-weight: 700;
   font-weight: 700;
 }
 
-.form-group input,
-.form-group textarea {
+.form-group input {
   padding: 14px 16px;
   border-radius: 10px;
   border: 2px solid var(--color-border);
@@ -568,8 +581,7 @@ font-weight: 700;
   color: var(--color-text);
 }
 
-.form-group input:focus,
-.form-group textarea:focus {
+.form-group input:focus{
   border-color: var(--color-primary);
   outline: none;
   background-color: var(--color-surface);
@@ -577,23 +589,8 @@ font-weight: 700;
   transform: translateY(-2px);
 }
 
-.form-group input::placeholder,
-.form-group textarea::placeholder {
+.form-group input::placeholder {
   color: var(--color-text-light);
-}
-
-.form-group textarea {
-  resize: vertical;
-  min-height: 120px;
-  font-family: inherit;
-}
-
-.field-hint {
- font-size: 0.8rem;
-  color: var(--color-text-secondary);
-  margin: 0;
-  line-height: 1.5;
-  font-weight: 400;
 }
 
 .select-wrapper {
@@ -602,7 +599,17 @@ font-weight: 700;
   box-shadow: 0 2px 8px rgba(91, 110, 255, 0.05);
 }
 
-/* ==================== MEMBERS PREVIEW ==================== */
+.form-wrapper {
+  width: 100%;
+  max-width: 600px;
+  padding: 48px;
+  background: linear-gradient(135deg, #FFFFFF 0%, #F8F9FC 100%);
+  border: 2px solid var(--color-border);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(168, 184, 240, 0.12);
+  animation: slideUp 0.5s ease-out;
+}
+
 .members-preview {
   padding: 20px;
   background: var(--color-surface-secondary);
@@ -713,7 +720,7 @@ font-weight: 700;
 }
 
 
-.workspace-details {
+.workspace-details, .meetings-details, .tasks-details {
   display: flex;
   justify-content: center;
   width: 100%;
@@ -722,7 +729,7 @@ font-weight: 700;
   background: #ffebe0;
 }
 
-.workspace-card {
+.workspace-card, .meeting-card, .task-card {
   width: 100%;
   max-width: 800px;
   background: var(--color-surface);
@@ -732,11 +739,10 @@ font-weight: 700;
   overflow: hidden;
 }
 
-/* ==================== WORKSPACE HEADER ==================== */
-.workspace-header {
+.workspace-header, .meetings-header, .tasks-header {
   padding: 16px;
   color: #9a532b;
-  background: none;
+  background: white;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -747,14 +753,14 @@ font-weight: 700;
   flex: 1;
 }
 
-.workspace-header h1 {
+.workspace-header h1 , .meetings-header h1, .tasks-header h1 {
   font-size: 2.2rem;
   margin: 0 0 12px 0;
   font-weight: 700;
   letter-spacing: -0.5px;
 }
 
-.workspace-description {
+.workspace-description, .meetings-description, .tasks-description {
   font-size: 1.05rem;
   margin: 0;
   opacity: 0.95;
@@ -791,8 +797,7 @@ font-weight: 700;
   transform: translateY(-2px);
 }
 
-/* ==================== WORKSPACE META ==================== */
-.workspace-meta {
+.workspace-meta , .meetings-meta, .tasks-meta {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 20px;
@@ -892,12 +897,6 @@ font-weight: 700;
   margin: 0;
 }
 
-.member-email {
-  font-size: 0.85rem;
-  color: var(--color-text-secondary);
-  margin: 4px 0 0 0;
-}
-
 .empty-members {
   text-align: center;
   padding: 40px 20px;
@@ -969,7 +968,6 @@ font-weight: 700;
   font-size: 1rem;
 }
 
-/* ==================== LOADING & ERROR STATES ==================== */
 .loading-state {
   text-align: center;
   padding: 80px 24px;
@@ -1077,7 +1075,7 @@ font-weight: 700;
   }
 }
 
-.workspace-list {
+.workspace-list, .meeting-list, .task-list {
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -1086,7 +1084,7 @@ font-weight: 700;
   background: linear-gradient(180deg, #FAFBFD 0%, #F5F7FC 100%);
 }
 
-.workspace-list-header {
+.workspace-list-header, .meeting-list-header, .task-list-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -1096,8 +1094,8 @@ font-weight: 700;
 }
 
 
-.workspace-list h1 {
-  font-size: 2.8rem;
+.workspace-list h1, .meeting-list h1 , .task-list h1 {
+  font-size: 2rem;
   font-weight: 700;
   margin: 0 0 12px 0;
   color:#9a532b;
@@ -1111,12 +1109,12 @@ font-weight: 700;
   line-height: 1.6;
 }
 
-.btn-create-workspace {
+.btn-create-workspace, .btn-create-meeting, .btn-create-task {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   padding: 14px 28px;
-  background:  #a6b9fd ;
+  background:  var(--color-secondary-green) ;
   color: rgb(65, 65, 126);
   border: none;
   border-radius: 10px;
@@ -1129,7 +1127,7 @@ font-weight: 700;
   white-space: nowrap;
 }
 
-.btn-create-workspace:hover {
+.btn-create-workspace:hover ,.btn-create-meeting:hover, .btn-create-task:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(168, 184, 240, 0.35);
 }
@@ -1138,7 +1136,7 @@ font-weight: 700;
   transform: translateY(0);
 }
 
-.workspaces-grid {
+.workspaces-grid, .meetings-grid, .tasks-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 24px;
@@ -1146,12 +1144,12 @@ font-weight: 700;
   width: 100%;
 }
 
-.workspace-card-link {
+.workspace-card-link, .meeting-card-link, .task-card-link {
   text-decoration: none;
   color: inherit;
 }
 
-.workspace-card {
+.workspace-card, .meeting-card, .task-card {
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -1163,12 +1161,6 @@ font-weight: 700;
   box-shadow: 0 4px 12px rgba(168, 184, 240, 0.08);
 }
 
-/* .workspace-card:hover {
-  border-color: #9a532b;
-  box-shadow: 0 12px 32px rgba(168, 184, 240, 0.12);
-  transform: translateY(-4px);
-} */
-
 .card-header {
   display: flex;
   justify-content: space-between;
@@ -1177,7 +1169,7 @@ font-weight: 700;
   margin-bottom: 16px;
 }
 
-.workspace-card h2 {
+.workspace-card h2 , .meeting-card h2, .task-card h2 {
   font-size: 1.4rem;
   font-weight: 700;
   margin: 0;
@@ -1199,8 +1191,7 @@ font-weight: 700;
   transform: translateX(0);
 }
 
-/* ==================== CARD CONTENT ==================== */
-.workspace-desc {
+.workspace-desc, .meeting-desc, .task-desc {
   font-size: 0.95rem;
   color: var(--color-text-secondary);
   margin: 0 0 20px 0;
@@ -1212,7 +1203,7 @@ font-weight: 700;
   flex: 1;
 }
 
-.workspace-footer {
+.workspace-footer, .meeting-footer, .task-footer {
   display: flex;
   align-items: center;
   padding-top: 16px;
@@ -1285,7 +1276,6 @@ color: #9a532b;
   box-shadow: 0 8px 25px rgba(168, 184, 240, 0.35);
 }
 
-/* ==================== RESPONSIVE DESIGN ==================== */
 @media (max-width: 768px) {
   .workspace-list {
     padding: 32px 16px;
