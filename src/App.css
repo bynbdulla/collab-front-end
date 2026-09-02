@@ -497,7 +497,7 @@ h4 {
   }
 }
 
-.workspace-edit-container,.meeting-edit-container, .workspace-form-container , .meeting-form-container, .task-form-container {
+.workspace-edit-container,.meeting-edit-container,.task-edit-container , .workspace-form-container , .meeting-form-container, .task-form-container {
   display: flex;
   justify-content: center;
   width: 100%;
@@ -570,7 +570,7 @@ font-weight: 700;
   font-weight: 700;
 }
 
-.form-group input {
+.form-group input , .form-group select {
   padding: 14px 16px;
   border-radius: 10px;
   border: 2px solid var(--color-border);

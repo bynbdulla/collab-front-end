@@ -9,7 +9,7 @@ const TaskList = () => {
   const { workspaceId } = useParams();
   const [tasks, setTasks] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
-  // const [filteredTasks, setFilteredTasks] = useState([]); 
+  // const [filteredTasks, setFilteredTasks] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -22,7 +22,7 @@ const TaskList = () => {
       } catch (error) {
         console.error("Failed to fetch tasks:", error);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
     };
     if (!tasks || tasks.length === 0) {
@@ -56,28 +56,36 @@ const TaskList = () => {
   //   }
   // }, [tasks, currentUser]);
 
-  
-
   return (
-    <main className="workspace-list">
-      
-      <div className="all-tasks">
-        <h1>All tasks</h1>
-        <Link to={`/workspaces/${workspaceId}/tasks/new`}>
-          <button type="submit">create new task</button>
+    <main className="task-list">
+     <div className="task-list-header">
+        <div className="header-content">
+          <h1>All tasks</h1>
+        </div>
+        <Link
+          to={`/workspaces/${workspaceId}/tasks/new`}
+          className="btn-create-task"
+        >
+          + New task
         </Link>
       </div>
-      {tasks.map((task) => (
-        <Link
-          key={task._id}
-          to={`/workspaces/${workspaceId}/tasks/${task._id}`}
-        >
-          <article className="task-card">
-            <h2>{task.name}</h2>
-            <h3>{task.assignedTo?.username || "Unassigned"}</h3>
-          </article>
-        </Link>
-      ))}
+      <div className="tasks-grid">
+        {tasks.map((task) => (
+          <Link
+            key={task._id}
+            to={`/workspaces/${workspaceId}/tasks/${task._id}`}
+            className="task-card-link"
+          >
+            <article className="task-card">
+              <h2>{task.name}</h2>
+              <p>
+                <strong>Assigned to:</strong>{" "}
+                {task.assignedTo?.username || "Unassigned"}
+              </p>
+            </article>
+          </Link>
+        ))}
+      </div>
     </main>
   );
 };
