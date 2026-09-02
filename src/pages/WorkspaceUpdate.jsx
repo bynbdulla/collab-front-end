@@ -46,7 +46,7 @@ const WorkspaceUpdate = (props) => {
     event.preventDefault();
     try {
       await props.handleUpdateWorkspace(workspaceId, formData);
-      navigate("/workspaces");
+      navigate(`/workspaces/${workspaceId}`);
     } catch (error) {
       console.error("Failed to update:", error);
     }
@@ -88,29 +88,36 @@ const WorkspaceUpdate = (props) => {
   }));
 
   return (
-    <div className="container">
-      <h1>Edit Workspace</h1>
+    <div className="workspace-edit-container">
+      <div className="workspace-edit-card">
+        <header className="edit-header">
+          <h1>Edit Workspace</h1>
+          <p className="edit-subtitle">Update workspace details and members</p>
+        </header>
       <form
         id="workspace-form"
         className="workspace-form"
         onSubmit={handleSubmit}
       >
-        <label htmlFor="name">Name:</label>
-        <input
-          required
-          type="text"
-          name="name"
+        <div className="form-group">
+          <label htmlFor="name">Name:</label>
+          <input
+            required
+            type="text"
+            name="name"
           value={formData.name}
           onChange={handleChange}
         />
-        <label htmlFor="description">Description: </label>
+        </div>
+        <div className="form-group"><label htmlFor="description">Description: </label>
         <input
           type="text"
           name="description"
           value={formData.description}
           onChange={handleChange}
-        />
-        <label htmlFor="members">members: </label>
+        /></div>
+        <div className="form-group">
+        <label htmlFor="members">Team members: </label>
         <div>
           <Select
             value={selectedValues}
@@ -119,6 +126,9 @@ const WorkspaceUpdate = (props) => {
             isMulti
             isSearchable={true}
             isClearable={true}
+            placeholder="Search and select members..."
+                className="basic-multi-select"
+                classNamePrefix="select"
           />
           {/* <select
             id="members"
@@ -134,9 +144,12 @@ const WorkspaceUpdate = (props) => {
             ))}
           </select> */}
         </div>
-
-        <button type="submit">Submit</button>
+        </div>
+        
+        <button type="submit" 
+              className="btn-primary">Submit</button>
       </form>
+    </div>
     </div>
   );
 };

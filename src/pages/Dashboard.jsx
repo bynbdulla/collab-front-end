@@ -16,16 +16,18 @@ const Dashboard = (props) => {
   return (
     <main className="dashboard">
       <div className="dashboard-welcome">
-        <p className="dashboard-eyebrow">COLLAB DASHBOARD</p>
+        {/* <p className="dashboard-eyebrow">COLLAB DASHBOARD</p> */}
 
         <h1>Welcome {props.user.username}!</h1>
         <h4>
           Keep track of your workspaces, tasks, and meetings in one place.
         </h4>
       </div>
-      <div className="dashboard-stats">
+      {/* <div className="dashboard-stats">
         <div className="dashboard-stat-card">
-          <div className="stat-icon">W</div>
+          <Link to="/workspaces" className="stat-link">
+            <div className="stat-icon">W</div>
+          </Link>
 
           <div>
             <p className="stat-label">Workspaces</p>
@@ -34,8 +36,9 @@ const Dashboard = (props) => {
         </div>
 
         <div className="dashboard-stat-card">
-          <div className="stat-icon">T</div>
-
+          <Link to="/workspaces/:workspaceId/tasks" className="stat-link">
+            <div className="stat-icon">T</div>
+          </Link>
           <div>
             <p className="stat-label">Tasks</p>
             <h2>—</h2>
@@ -43,19 +46,22 @@ const Dashboard = (props) => {
         </div>
 
         <div className="dashboard-stat-card">
-          <div className="stat-icon">M</div>
-
+          <Link to="/workspaces/:workspaceId/meetings" className="stat-link">
+            <div className="stat-icon">M</div>
+          </Link>
           <div>
             <p className="stat-label">Meetings</p>
             <h2>—</h2>
           </div>
         </div>
-      </div>
+      </div> */}
 
       <div className="dashboard-section">
         <div className="dashboard-section-header">
           <div>
-            <h2>My Workspaces</h2>
+            <Link to="/workspaces">
+              <h2>My Workspaces</h2>
+            </Link>
             <p>Access and manage the projects you're part of.</p>
           </div>
 
@@ -63,8 +69,6 @@ const Dashboard = (props) => {
             + New Workspace
           </Link>
         </div>
-
-        
       </div>
     </main>
   );

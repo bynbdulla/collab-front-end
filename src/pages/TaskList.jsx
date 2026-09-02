@@ -9,7 +9,7 @@ const TaskList = () => {
   const { workspaceId } = useParams();
   const [tasks, setTasks] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
-  const [filteredTasks, setFilteredTasks] = useState([]); 
+  // const [filteredTasks, setFilteredTasks] = useState([]); 
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -59,7 +59,8 @@ const TaskList = () => {
   
 
   return (
-    <main className="tasks-list">
+    <main className="workspace-list">
+      
       <div className="all-tasks">
         <h1>All tasks</h1>
         <Link to={`/workspaces/${workspaceId}/tasks/new`}>
@@ -73,6 +74,7 @@ const TaskList = () => {
         >
           <article className="task-card">
             <h2>{task.name}</h2>
+            <h3>{task.assignedTo?.username || "Unassigned"}</h3>
           </article>
         </Link>
       ))}
