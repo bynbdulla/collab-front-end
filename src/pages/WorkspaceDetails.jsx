@@ -40,7 +40,7 @@ const WorkspaceDetails = (props) => {
       <div>
         {workspace.members && workspace.members.length > 0 ? (
           workspace.members.map((member) => (
-            <div className="member-container">
+            <div className="member-container" key={member._id}>
             <p className="member" key={member._id} >{member.username}</p>
             </div>
           ))

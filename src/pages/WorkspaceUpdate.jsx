@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
 import * as workspaceService from "../services/workspace";
 import { index as getAllUsers } from "../services/user";
+import Select from "react-select";
 
 const WorkspaceUpdate = (props) => {
   const { workspaceId } = useParams();
@@ -51,12 +52,20 @@ const WorkspaceUpdate = (props) => {
     }
   };
 
-  const handleMembersChange = (event) => {
-    const selected = Array.from(
-      event.target.selectedOptions,
-      (option) => option.value,
-    );
-    setFormData({ ...formData, members: selected });
+  // const handleMembersChange = (event) => {
+  //   const selected = Array.from(
+  //     event.target.selectedOptions,
+  //     (option) => option.value,
+  //   );
+  //   setFormData({ ...formData, members: selected });
+  // };
+
+  const handleMembersChange = (selectedOptions) => {
+    const selectedUsers = selectedOptions.map((option) => ({
+      _id: option.value,
+      username: option.label,
+    }));
+    setFormData({ ...formData, members: selectedUsers });
   };
 
   if (loading) return <p>Loading...</p>;
@@ -64,6 +73,19 @@ const WorkspaceUpdate = (props) => {
   const selectedUsers = allUsers.filter((user) =>
     formData.members.includes(user._id),
   );
+
+  const userOptions = allUsers.map((user) => ({
+    value: user._id,
+    label: user.username,
+    _id: user._id,
+    username: user.username,
+    email: user.email,
+  }));
+
+  const selectedValues = formData.members.map((member) => ({
+    value: member._id || member,
+    label: member.username || member,
+  }));
 
   return (
     <div className="container">
@@ -90,7 +112,15 @@ const WorkspaceUpdate = (props) => {
         />
         <label htmlFor="members">members: </label>
         <div>
-          <select
+          <Select
+            value={selectedValues}
+            options={userOptions}
+            onChange={handleMembersChange}
+            isMulti
+            isSearchable={true}
+            isClearable={true}
+          />
+          {/* <select
             id="members"
             name="members"
             multiple
@@ -98,13 +128,13 @@ const WorkspaceUpdate = (props) => {
             onChange={handleMembersChange}
           >
             {allUsers.map((user) => (
-              <option key={user._id} value={user._id}>
+              <option key={user._id} value={user._id} selected>
                 {user.username}
               </option>
             ))}
-          </select>
+          </select> */}
         </div>
-        
+
         <button type="submit">Submit</button>
       </form>
     </div>

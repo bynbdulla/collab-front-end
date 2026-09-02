@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
 import * as taskService from "../services/task";
 import * as workspaceService from "../services/workspace";
+import * as userService from "../services/user";
 
 const TasksUpdate = (props) => {
   const { workspaceId, taskId } = useParams();
@@ -16,6 +17,24 @@ const TasksUpdate = (props) => {
     status: "To Do",
   });
   const [workspace, setWorkspace] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
+  const [task, setTask] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [authorized, setAuthorized] = useState(false);
+
+  useEffect(() => {
+    const fetchCurrentUser = async () => {
+      try {
+        const user = await userService.getCurrentUser();
+        setCurrentUser(user);
+      } catch (error) {
+        console.error("Failed to fetch current user:", error);
+        const storedUser = JSON.parse(localStorage.getItem("user"));
+        setCurrentUser(storedUser);
+      }
+    };
+    fetchCurrentUser();
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -38,6 +57,18 @@ const TasksUpdate = (props) => {
     };
     fetchData();
   }, [workspaceId, taskId]);
+
+  useEffect(() => {
+    if (currentUser && task) {
+      const taskOwner = task.owner?._id || task.owner;
+      const userId = currentUser._id || currentUser.id;
+ 
+      // Only owner can edit
+      const isAuthorized = taskOwner === userId;
+      setAuthorized(isAuthorized);
+    }
+  }, [task, currentUser]);
+
   const memberNames =
     workspace?.members?.map((member) => member.username) || [];
 
@@ -55,9 +86,41 @@ const TasksUpdate = (props) => {
       console.error("Failed to update:", error);
     }
   };
-  // if (loading) return <p>Loading...</p>;
 
-  // if (!formData) return <p>Loading...</p>;
+  if (loading) {
+    return (
+      <main className="tasks-edit">
+        <p className="loading-message">Loading task...</p>
+      </main>
+    );
+  }
+
+  if (!task) {
+    return (
+      <main className="tasks-edit">
+        <div className="error-state">
+          <p>Task not found</p>
+          <button onClick={() => navigate(`/workspaces/${workspaceId}/tasks`)}>
+            Back to Tasks
+          </button>
+        </div>
+      </main>
+    );
+  }
+
+  if (!authorized) {
+    return (
+      <main className="tasks-edit">
+        <div className="error-state">
+          <h2>🔒 Access Denied</h2>
+          <p>Only the task owner can edit this task.</p>
+          <button onClick={() => navigate(`/workspaces/${workspaceId}/tasks/${taskId}`)}>
+            Back to Task Details
+          </button>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <div className="container">

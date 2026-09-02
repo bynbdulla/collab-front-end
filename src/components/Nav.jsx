@@ -11,7 +11,7 @@ const Nav = (props) => {
 
     return (
         <nav>
-            <Link className="nav-brand" to="/"><img src={logo} alt="Collab" /></Link>
+            <Link className="nav-brand" to="/"><img src={logo} alt="Collab" /> Collab</Link>
             { props.user ? (
                 <ul>
                     <li>
