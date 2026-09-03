@@ -43,11 +43,16 @@ const TasksUpdate = (props) => {
         const task = await taskService.show(workspaceId, taskId);
         const workspaceData = await workspaceService.show(workspaceId);
 
+        const assignedToId = 
+          typeof taskData.assignedTo === "object" 
+            ? taskData.assignedTo._id 
+            : taskData.assignedTo || "";
+
         setFormData({
           name: task.name || "",
           description: task.description || "",
           priority: task.priority || "High",
-          assignedTo: task.assignedTo || "",
+          assignedTo: assignedToId || "",
           workspaceId: task.workspaceId || "",
           status: task.status || "To Do",
         });

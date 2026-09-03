@@ -599,6 +599,15 @@ font-weight: 700;
   box-shadow: 0 2px 8px rgba(91, 110, 255, 0.05);
 }
 
+.app-main {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 48px 24px;
+  min-height: calc(100vh - 60px);
+  background-color: var(--color-background);
+}
+
 .form-wrapper {
   width: 100%;
   max-width: 600px;

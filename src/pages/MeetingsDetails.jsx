@@ -7,13 +7,6 @@ const MeetingsDetails = (props) => {
   const [meetings, setMeetings] = useState(null);
   const navigate = useNavigate();
 
-  // const formattedDate = meetings.meetingDate
-  // ? new Date(meetings.meetingDate).toLocaleDateString("en-US", {
-  //     year: "numeric",
-  //     month: "long",
-  //     day: "numeric",
-  //   })
-  // : "Not specified";
 
 
   useEffect(() => {
